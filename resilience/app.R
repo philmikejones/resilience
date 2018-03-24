@@ -3,9 +3,10 @@
 #
 
 library("shiny")
+library("tidyverse")
 library("sf")
 library("tmap")
-oa = readRDS("../data/oa.rds")
+don = readRDS("../data/don.rds")
 
 
 ui <- fluidPage(
@@ -13,6 +14,7 @@ ui <- fluidPage(
   titlePanel("Resilient characteristics"),
 
   sidebarLayout(
+
     sidebarPanel(
       selectInput(
         inputId  = "choose_variable",
