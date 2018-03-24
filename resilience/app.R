@@ -1,9 +1,4 @@
 #
-# This is a Shiny web application. You can run the application by clicking
-# the 'Run App' button above.
-#
-# Find out more about building applications with Shiny here:
-#
 #    http://shiny.rstudio.com/
 #
 
@@ -13,18 +8,25 @@ library("tmap")
 oa = readRDS("../data/oa.rds")
 
 
-ui <- bootstrapPage(
+ui <- fluidPage(
 
   titlePanel("Resilient characteristics"),
 
-  selectInput(
-    inputId  = "choose_variable",
-    label    = "Choose variable",
-    choices  = c("cheese", "coffee"),
-    selected = "cheese"
-  ),
+  sidebarLayout(
+    sidebarPanel(
+      selectInput(
+        inputId  = "choose_variable",
+        label    = "Choose variable",
+        choices  = c("cheese", "coffee"),
+        selected = "cheese"
+      )
+    ),
 
-  plotOutput("map")
+    mainPanel(
+      plotOutput("map", height = "700px")
+    )
+
+  )
 
 )
 
@@ -34,7 +36,7 @@ server <- function(input, output) {
   map =
     tmap::tm_shape(oa) +
     tmap::tm_polygons("pop_16_plus") +
-    tmap::tm_layout(frame = FALSE)
+    tmap::tm_layout(frame = TRUE)
 
   output$map <- renderPlot({
     map
