@@ -28,7 +28,6 @@ ui <- fluidPage(
     ),
 
     mainPanel(
-      textOutput("var"),
       leafletOutput("map", height = "700px")
     )
 
@@ -39,15 +38,13 @@ ui <- fluidPage(
 
 server <- function(input, output) {
 
-  output$var = renderText(
-    input$choose_variable
-  )
-
   output$map <- renderLeaflet({
+
     leaflet(don) %>%
       addPolygons(
         weight = 1,
-        fillOpacity = 0.6
+        fillOpacity = 0.6,
+        color = input$choose_variable
       ) %>%
       addProviderTiles(
         "OpenStreetMap.Mapnik",
