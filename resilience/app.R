@@ -3,9 +3,10 @@
 #
 
 library("shiny")
-library("tidyverse")
+library("magrittr")
 library("sf")
-library("tmap")
+library("leaflet")
+
 don = readRDS("../data/don.rds")
 
 
@@ -25,7 +26,7 @@ ui <- fluidPage(
     ),
 
     mainPanel(
-      plotOutput("map", height = "700px")
+      leafletOutput("map", height = "700px")
     )
 
   )
@@ -35,13 +36,29 @@ ui <- fluidPage(
 
 server <- function(input, output) {
 
-  map =
-    tmap::tm_shape(don) +
-    tmap::tm_polygons("pop_16_plus") +
-    tmap::tm_layout(frame = TRUE)
+  colour = colorNumeric(
+    palette = "Blues",
+    domain  = don$pop_16_plus
+  )
 
-  output$map <- renderPlot({
-    map
+  output$map <- renderLeaflet({
+    leaflet(don) %>%
+      addPolygons(
+        weight = 1,
+        fillOpacity = 0.8,
+        fillColor = ~colour(pop_16_plus)
+      ) %>%
+      addProviderTiles(
+        "OpenStreetMap.Mapnik",
+        options = providerTileOptions(opacity = 0.33)
+      ) %>%
+      addLegend(
+        "bottomright",
+        pal = colour,
+        values = ~pop_16_plus,
+        title = "Doncaster resilience",
+        opacity = 0.8
+      )
   })
 
 }
