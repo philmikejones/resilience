@@ -22,7 +22,8 @@ ui <- fluidPage(
         label    = "Choose variable",
         choices  = c("cheese", "coffee"),
         selected = "cheese"
-      )
+      ),
+      width = 3
     ),
 
     mainPanel(
