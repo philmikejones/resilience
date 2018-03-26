@@ -36,7 +36,7 @@ ui <- fluidPage(
 server <- function(input, output) {
 
   map =
-    tmap::tm_shape(oa) +
+    tmap::tm_shape(don) +
     tmap::tm_polygons("pop_16_plus") +
     tmap::tm_layout(frame = TRUE)
 
