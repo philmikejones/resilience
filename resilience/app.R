@@ -8,6 +8,7 @@ library("sf")
 library("leaflet")
 
 don = readRDS("../data/don.rds")
+vars = readRDS("../data/vars.rds")
 
 
 ui <- fluidPage(
@@ -20,8 +21,8 @@ ui <- fluidPage(
       selectInput(
         inputId  = "choose_variable",
         label    = "Choose variable",
-        choices  = c("cheese", "coffee"),
-        selected = "cheese"
+        choices  = vars,
+        selected = vars[1]
       ),
       width = 3
     ),
