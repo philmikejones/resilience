@@ -28,6 +28,7 @@ ui <- fluidPage(
     ),
 
     mainPanel(
+      textOutput("var"),
       leafletOutput("map", height = "700px")
     )
 
@@ -38,28 +39,19 @@ ui <- fluidPage(
 
 server <- function(input, output) {
 
-  colour = colorNumeric(
-    palette = "Blues",
-    domain  = don$pop_16_plus
+  output$var = renderText(
+    input$choose_variable
   )
 
   output$map <- renderLeaflet({
     leaflet(don) %>%
       addPolygons(
         weight = 1,
-        fillOpacity = 0.8,
-        fillColor = ~colour(pop_16_plus)
+        fillOpacity = 0.6
       ) %>%
       addProviderTiles(
         "OpenStreetMap.Mapnik",
         options = providerTileOptions(opacity = 0.33)
-      ) %>%
-      addLegend(
-        "bottomright",
-        pal = colour,
-        values = ~pop_16_plus,
-        title = "Doncaster resilience",
-        opacity = 0.8
       )
   })
 
