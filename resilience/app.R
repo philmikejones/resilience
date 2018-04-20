@@ -20,7 +20,7 @@ ui <- fluidPage(
     sidebarPanel(
       selectInput(
         inputId  = "choose_variable",
-        label    = "Choose variable",
+        label    = "Choose variable:",
         choices  = vars,
         selected = vars[1]
       ),
