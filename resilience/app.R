@@ -1,7 +1,3 @@
-#
-#    http://shiny.rstudio.com/
-#
-
 library("shiny")
 library("magrittr")
 library("sf")
@@ -9,7 +5,7 @@ library("leaflet")
 
 don = readRDS("../data/don.rds")
 vars = readRDS("../data/vars.rds")
-
+pal_range = c(50, 17000)
 
 ui <- fluidPage(
 
@@ -40,13 +36,14 @@ server <- function(input, output) {
 
   output$map <- renderLeaflet({
 
+    pal = colorNumeric("Blues", pal_range)
+
     leaflet(don) %>%
-      addProviderTiles(
-        "OpenStreetMap.Mapnik",
-      ) %>%
+      addProviderTiles("OpenStreetMap.Mapnik") %>%
       addPolygons(
         weight = 1,
-        fillColor = input$chosen_var
+        fillColor = ~ pal(don[[input$chosen_var]]),
+        fillOpacity = 0.7
       )
 
   })
