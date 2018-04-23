@@ -1,11 +1,11 @@
 library("shiny")
 library("magrittr")
+library("dplyr")
 library("sf")
 library("leaflet")
 
-don = readRDS("../data/don.rds")
+don  = readRDS("../data/don.rds")
 vars = readRDS("../data/vars.rds")
-pal_range = c(50, 17000)
 
 ui <- fluidPage(
 
@@ -24,6 +24,7 @@ ui <- fluidPage(
     ),
 
     mainPanel(
+      DT::dataTableOutput(outputId = "table"),
       leafletOutput(outputId = "map", height = "700px")
     )
 
@@ -34,17 +35,21 @@ ui <- fluidPage(
 
 server <- function(input, output) {
 
+  don_subset <-
+    reactive({
+      don %>%
+        select(code, name, input$chosen_var)
+    })
+
+  output$table <- DT::renderDataTable({
+    don_subset() %>% sf::st_set_geometry(NULL)
+  })
+
   output$map <- renderLeaflet({
 
-    pal = colorNumeric("Blues", pal_range)
-
-    leaflet(don) %>%
+    leaflet(don_subset()) %>%
       addProviderTiles("OpenStreetMap.Mapnik") %>%
-      addPolygons(
-        weight = 1,
-        fillColor = ~ pal(don[[input$chosen_var]]),
-        fillOpacity = 0.7
-      )
+      addPolygons(weight = 1)
 
   })
 
