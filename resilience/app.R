@@ -45,12 +45,20 @@ server <- function(input, output) {
     don_subset() %>% sf::st_set_geometry(NULL)
   })
 
+  colourpal <- reactive({
+    colorBin("Blues", domain = don[[input$chosen_var]])
+  })
+
   output$map <- renderLeaflet({
 
-    leaflet(don_subset()) %>%
-      addProviderTiles("OpenStreetMap.Mapnik") %>%
-      addPolygons(weight = 1)
+    leaflet() %>%
+      addProviderTiles("OpenStreetMap.Mapnik")
 
+  })
+
+  observe({
+    leafletProxy("map", data = don_subset()) %>%
+      addPolygons(weight = 1, fillColor = colourpal, fillOpacity = 0.4)
   })
 
 }
