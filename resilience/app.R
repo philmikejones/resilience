@@ -9,10 +9,10 @@ vars = readRDS("../data/vars.rds")
 
 ui <- fluidPage(
 
-    mainPanel(
-      leafletOutput(outputId = "map", height = "700px"),
-      width = 12
-    )
+  mainPanel(
+    leafletOutput(outputId = "map", height = "700px"),
+    width = 12
+  )
 
 )
 
