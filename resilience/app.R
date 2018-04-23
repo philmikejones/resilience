@@ -28,7 +28,14 @@ server <- function(input, output) {
       addPolygons(
         weight = 1,
         fillColor = ~pal(don$`Neighbourhood cohesion`),
-        fillOpacity = 0.5
+        fillOpacity = 0.6
+      ) %>%
+      addLegend(
+        "bottomright",
+        pal = pal,
+        values = ~ don$`Neighbourhood cohesion`,
+        opacity = 0.6,
+        title = "Count (persons)"
       )
 
   })
