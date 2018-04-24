@@ -1,11 +1,13 @@
+
 library("shiny")
-library("magrittr")
+library("leaflet")
 library("dplyr")
 library("sf")
-library("leaflet")
 
 don  = readRDS("../data/don.rds")
 vars = readRDS("../data/vars.rds")
+don_pal = readRDS("../data/don_pal.rds")
+
 
 ui <- fluidPage(
 
@@ -18,9 +20,8 @@ ui <- fluidPage(
       choices  = vars
     ),
 
-    leafletOutput(outputId = "map", height = "700px"),
+    leafletOutput(outputId = "map", width = "100%", height = "700px"),
     width = 12
-
   )
 
 )
@@ -28,24 +29,38 @@ ui <- fluidPage(
 
 server <- function(input, output) {
 
+  colorpal <- reactive({
+    colorNumeric("Blues", don[[input$selected_var]])
+  })
+
   output$map <- renderLeaflet({
 
-    var = reactive(don %>% select(code, name, input$selected_var))
-    pal = colorNumeric("YlOrRd", domain = c(0, 16555))
+    leaflet() %>%
+      addProviderTiles("CartoDB.Positron") %>%
+      setView(lat = 53.53, lng = -1.1, zoom = 11)
 
-    leaflet(don) %>%
-      addProviderTiles(providers$CartoDB.Positron) %>%
-      addPolygons(
-        weight = 1,
-        fillColor = ~ pal(var()[[input$selected_var]]),
-        fillOpacity = 0.6
-      ) %>%
+  })
+
+  observe({
+
+    pal <- colorpal()
+
+    leafletProxy("map", data = don) %>%
+      clearShapes() %>%
+      addPolygons(weight = 1, fillColor = ~pal(don[[input$selected_var]]))
+
+  })
+
+  observe({
+
+    pal <- colorpal()
+
+    leafletProxy("map", data = don) %>%
+      clearControls() %>%
       addLegend(
-        "bottomright",
-        pal = pal,
-        values = ~ c(0, 16555),
-        opacity = 0.6,
-        title = "Count (persons)"
+        position = "bottomright",
+        pal = pal, values = ~ don[[input$selected_var]],
+        title = "Number of persons"
       )
 
   })
