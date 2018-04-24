@@ -46,7 +46,11 @@ server <- function(input, output) {
 
     leafletProxy("map", data = don) %>%
       clearShapes() %>%
-      addPolygons(weight = 1, fillColor = ~pal(don[[input$selected_var]]))
+      addPolygons(
+        weight = 1,
+        fillColor = ~pal(don[[input$selected_var]]),
+        fillOpacity = 0.7
+      )
 
   })
 
@@ -65,7 +69,8 @@ server <- function(input, output) {
       addLegend(
         position = "bottomright",
         pal = pal, values = ~ don[[input$selected_var]],
-        title = title
+        title = title,
+        opacity = 0.7
       )
 
   })
