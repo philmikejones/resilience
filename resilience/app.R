@@ -28,7 +28,7 @@ ui <- fluidPage(
 server <- function(input, output) {
 
   colorpal <- reactive({
-    colorNumeric("Blues", don[[input$selected_var]])
+    colorNumeric("BuGn", don[[input$selected_var]])
   })
 
   output$map <- renderLeaflet({
