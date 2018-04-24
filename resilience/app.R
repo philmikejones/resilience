@@ -6,7 +6,6 @@ library("sf")
 
 don  = readRDS("../data/don.rds")
 vars = readRDS("../data/vars.rds")
-don_pal = readRDS("../data/don_pal.rds")
 
 
 ui <- fluidPage(
@@ -55,12 +54,18 @@ server <- function(input, output) {
 
     pal <- colorpal()
 
+    if (input$selected_var == "Population (16+)") {
+      title = "Number of persons 16+"
+    } else {
+      title = "Proportion of persons 16+"
+    }
+
     leafletProxy("map", data = don) %>%
       clearControls() %>%
       addLegend(
         position = "bottomright",
         pal = pal, values = ~ don[[input$selected_var]],
-        title = "Number of persons"
+        title = title
       )
 
   })
