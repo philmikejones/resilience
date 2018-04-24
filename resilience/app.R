@@ -1,7 +1,6 @@
 
 library("shiny")
 library("leaflet")
-library("dplyr")
 library("sf")
 
 don  = readRDS("../data/don.rds")
