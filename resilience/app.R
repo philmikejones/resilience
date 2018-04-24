@@ -3,8 +3,8 @@ library("shiny")
 library("leaflet")
 library("sf")
 
-don  = readRDS("../data/don.rds")
-vars = readRDS("../data/vars.rds")
+don  = readRDS("data/don.rds")
+vars = readRDS("data/vars.rds")
 
 
 ui <- fluidPage(
