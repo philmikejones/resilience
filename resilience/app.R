@@ -41,6 +41,17 @@ server <- function(input, output) {
 
   observe({
 
+    if (input$selected_var == "Population (16+)") {
+      var = don[[input$selected_var]]
+    } else {
+      var = paste0(format(don[[input$selected_var]] * 100, digits = 4), "%")
+    }
+
+    labels <- sprintf(
+      "<strong>%s</strong><br/>%s</sup>",
+      don$name, var
+    ) %>% lapply(htmltools::HTML)
+
     pal <- colorpal()
 
     leafletProxy("map", data = don) %>%
@@ -48,7 +59,16 @@ server <- function(input, output) {
       addPolygons(
         weight = 1,
         fillColor = ~pal(don[[input$selected_var]]),
-        fillOpacity = 0.7
+        fillOpacity = 0.7,
+        highlightOptions = highlightOptions(
+          color = "white", weight = 2, bringToFront = TRUE
+        ),
+        label = labels,
+        labelOptions = labelOptions(
+          style = list("font-weight" = "normal", padding = "3px 8px"),
+          textsize = "15px",
+          direction = "auto"
+        )
       )
 
   })
@@ -62,6 +82,11 @@ server <- function(input, output) {
     } else {
       title = "Proportion of persons 16+"
     }
+
+    title <- sprintf(
+      "%s<br/>%s</sup>",
+      input$selected_var, title
+    ) %>% lapply(htmltools::HTML)
 
     leafletProxy("map", data = don) %>%
       clearControls() %>%
