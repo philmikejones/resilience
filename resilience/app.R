@@ -44,11 +44,14 @@ server <- function(input, output) {
     if (input$selected_var == "Population (16+)") {
       var = don[[input$selected_var]]
     } else {
-      var = paste0(format(don[[input$selected_var]] * 100, digits = 4), "%")
+      var = paste0(
+        format(don[[input$selected_var]] * 100, digits = 4),
+        "%"
+      )
     }
 
     labels <- sprintf(
-      "<strong>%s</strong><br/>%s</sup>",
+      "<strong>%s</strong><br/>%s",
       don$name, var
     ) %>% lapply(htmltools::HTML)
 
@@ -84,7 +87,7 @@ server <- function(input, output) {
     }
 
     title <- sprintf(
-      "%s<br/>%s</sup>",
+      "%s<br/>%s",
       input$selected_var, title
     ) %>% lapply(htmltools::HTML)
 
