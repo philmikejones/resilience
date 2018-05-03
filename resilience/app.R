@@ -8,7 +8,9 @@ don  = readRDS("data/don.rds")
 vars = readRDS("data/vars.rds")
 ghq  = readRDS("data/ghq-notes.rds")
 
-ui <- fluidPage(theme = shinytheme("lumen"),
+ui <- fluidPage(
+
+  theme = shinytheme("lumen"),
 
   mainPanel(
 
@@ -21,47 +23,67 @@ ui <- fluidPage(theme = shinytheme("lumen"),
       )
     ),
 
-    leafletOutput(outputId = "map", width = "100%", height = "650px"),
-
-    tags$h4("Notes:"),
-    tags$ul(
-      tags$li("Copyright 2018 Phil Mike Jones."),
-      tags$li("Population (16+) from 2011 Census."),
-      tags$li("Other variables simulated using data from 2011 Census and Understanding Society."),
-      tags$li(
-        "For details on the simulation method see ",
-        tags$a("http://etheses.whiterose.ac.uk/19283/")
-      ),
-      tags$li(
-        "Variables labelled \"GHQ:\" are items in the General Health Questionnaire, copyright GL Assessment (",
-        tags$a("https://www.gl-assessment.co.uk/products/general-health-questionnaire-ghq/"),
-        "), and asked in Understanding Society."
-      ),
-      tags$li("The scores for some items have been reversed to make scoring direction consistent, and scores of 1-2 were coded as resilient."),
-      tags$li("See table below for GHQ items and variable names given.")
-    ),
-
-    tags$h4("GHQ items"),
-    DT::DTOutput("ghq_notes"),
-
-    tags$h4("Sources:"),
-    tags$dl(
-      tags$dt("Boundary data"),
-      tags$dd(
-        "Office for National Statistics, 2011 Census: Digitised Boundary Data (England and Wales) [computer file]. UK Data Service Census Support. Downloaded from: ",
-        tags$a("https://borders.ukdataservice.ac.uk/")
+    tabsetPanel(
+      tabPanel(
+        "Plot",
+        leafletOutput(outputId = "map", width = "100%", height = "650px")
       ),
 
-      tags$dt("2011 Census"),
-      tags$dd(
-        "Office for National Statistics (2016): 2011 Census aggregate data. UK Data Service (Edition: June 2016). DOI: ",
-        tags$a("http://dx.doi.org/10.5257/census/aggregate-2011-1")
+      tabPanel(
+        "Notes",
+        tags$br(),
+        tags$ul(
+          tags$li("Copyright 2018 Phil Mike Jones."),
+          tags$li("Population (16+) from 2011 Census."),
+          tags$li("Other variables are simulated using data from 2011 Census and Understanding Society."),
+          tags$li(
+            "For details on the simulation method see ",
+            tags$a(
+              "Jones, P M (2017) ",
+              tags$em("A Spatial Microsimulation Analysis of Health Inequalities and Health Resilience"),
+              ". PhD thesis, University of Sheffield.",
+              href = "http://etheses.whiterose.ac.uk/19283/"
+            )
+          )
+        )
       ),
 
-      tags$dt("Understanding Society"),
-      tags$dd(
-        "University of Essex. Institute for Social and Economic Research, NatCen Social Research, Kantar Public. (2017). Understanding Society: Waves 1-7, 2009-2016 and Harmonised BHPS: Waves 1-18, 1991-2009. [data collection]. 9th Edition. UK Data Service. SN: 6614"
+      tabPanel(
+        "GHQ items",
+        p(
+          "Variables labelled \"GHQ:\" are items in the General Health Questionnaire, copyright ",
+          tags$a("GL Assessment", href = "https://www.gl-assessment.co.uk/products/general-health-questionnaire-ghq/"),
+          ", and asked in Understanding Society.",
+          "The scores for some items have been reversed to make scoring direction consistent, and scores of 1-2 were coded as resilient."
+        ),
+
+        DT::DTOutput("ghq_notes")
+      ),
+
+      tabPanel(
+        "Sources",
+        {
+          tags$dl(
+            tags$dt("Boundary data"),
+            tags$dd(
+              "Office for National Statistics, 2011 Census: Digitised Boundary Data (England and Wales) [computer file]. UK Data Service Census Support. Downloaded from: ",
+              tags$a("https://borders.ukdataservice.ac.uk/")
+            ),
+
+            tags$dt("2011 Census"),
+            tags$dd(
+              "Office for National Statistics (2016): 2011 Census aggregate data. UK Data Service (Edition: June 2016). DOI: ",
+              tags$a("http://dx.doi.org/10.5257/census/aggregate-2011-1")
+            ),
+
+            tags$dt("Understanding Society"),
+            tags$dd(
+              "University of Essex. Institute for Social and Economic Research, NatCen Social Research, Kantar Public. (2017). Understanding Society: Waves 1-7, 2009-2016 and Harmonised BHPS: Waves 1-18, 1991-2009. [data collection]. 9th Edition. UK Data Service. SN: 6614"
+            )
+          )
+        }
       )
+
     ),
 
     width = 12
