@@ -12,11 +12,13 @@ ui <- fluidPage(theme = shinytheme("lumen"),
 
   mainPanel(
 
-    selectInput(
-      inputId  = "selected_var",
-      label    = "Choose variable to plot",
-      selected = vars[2],
-      choices  = vars
+    wellPanel(
+      selectInput(
+        inputId  = "selected_var",
+        label    = "Choose variable to plot",
+        selected = vars[2],
+        choices  = vars
+      )
     ),
 
     leafletOutput(outputId = "map", width = "100%", height = "650px"),
