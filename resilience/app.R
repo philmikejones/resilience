@@ -5,7 +5,7 @@ library("sf")
 
 don  = readRDS("data/don.rds")
 vars = readRDS("data/vars.rds")
-
+ghq  = readRDS("data/ghq-notes.rds")
 
 ui <- fluidPage(
 
@@ -19,6 +19,8 @@ ui <- fluidPage(
     ),
 
     leafletOutput(outputId = "map", width = "100%", height = "700px"),
+    tags$h4("GHQ items"),
+    DT::DTOutput("ghq_notes"),
     width = 12
   )
 
@@ -101,6 +103,11 @@ server <- function(input, output) {
       )
 
   })
+
+  output$ghq_notes <- DT::renderDT(
+    ghq,
+    options = list(pageLength = nrow(ghq))
+  )
 
 }
 
