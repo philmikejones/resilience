@@ -18,7 +18,26 @@ ui <- fluidPage(
       choices  = vars
     ),
 
-    leafletOutput(outputId = "map", width = "100%", height = "700px"),
+    leafletOutput(outputId = "map", width = "100%", height = "650px"),
+
+    tags$h4("Notes:"),
+    tags$ul(
+      tags$li("Copyright 2018 Phil Mike Jones."),
+      tags$li("Population (16+) from 2011 Census."),
+      tags$li("Other variables simulated using data from 2011 Census and Understanding Society."),
+      tags$li(
+        "For details on the simulation method see ",
+        tags$a("http://etheses.whiterose.ac.uk/19283/")
+      ),
+      tags$li(
+        "Variables labelled \"GHQ:\" are items in the General Health Questionnaire, copyright GL Assessment (",
+        tags$a("https://www.gl-assessment.co.uk/products/general-health-questionnaire-ghq/"),
+        "), and asked in Understanding Society."
+      ),
+      tags$li("The scores for some items have been reversed to make scoring direction consistent, and scores of 1-2 were coded as resilient."),
+      tags$li("See table below for GHQ items and variable names given.")
+    ),
+
     tags$h4("GHQ items"),
     DT::DTOutput("ghq_notes"),
 
