@@ -1,5 +1,6 @@
 
 library("shiny")
+library("shinythemes")
 library("leaflet")
 library("sf")
 
@@ -7,7 +8,7 @@ don  = readRDS("data/don.rds")
 vars = readRDS("data/vars.rds")
 ghq  = readRDS("data/ghq-notes.rds")
 
-ui <- fluidPage(
+ui <- fluidPage(theme = shinytheme("lumen"),
 
   mainPanel(
 
